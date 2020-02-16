@@ -13,12 +13,24 @@
       
       <categories>
           
-          <category> gvim </category>
+          <category> 编程 </category>
           
-          <category> IDE </category>
+          <category> 工具 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> gvim </tag>
+            
+            <tag> c </tag>
+            
+            <tag> c++ </tag>
+            
+            <tag> ide </tag>
+            
+        </tags>
       
     </entry>
     
@@ -39,6 +51,20 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> markdown </tag>
+            
+            <tag> github page </tag>
+            
+            <tag> hexo </tag>
+            
+            <tag> 个人博客 </tag>
+            
+            <tag> 静态页面 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -53,10 +79,16 @@
       
       <categories>
           
-          <category> cmd </category>
+          <category> 工具 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> Typeperf </tag>
+            
+        </tags>
       
     </entry>
     
@@ -77,6 +109,14 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> markdown </tag>
+            
+            <tag> 使用技巧 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -91,14 +131,20 @@
       
       <categories>
           
-          <category> idea </category>
-          
-          <category> IDE </category>
-          
-          <category> PlantUML </category>
+          <category> 工具 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> idea </tag>
+            
+            <tag> plantuml </tag>
+            
+            <tag> 问题解决 </tag>
+            
+        </tags>
       
     </entry>
     
