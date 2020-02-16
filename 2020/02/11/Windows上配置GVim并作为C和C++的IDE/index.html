@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>Windows上配置gvim并作为C和C++的IDE | Reasuon</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><meta name="generator" content="Hexo 4.2.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Windows上配置gvim并作为C和C++的IDE</h1><a id="logo" href="/.">Reasuon</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Windows上配置gvim并作为C和C++的IDE</h1><div class="post-meta">Feb 11, 2020<span> | </span><span class="category"><a href="/categories/gvim/">gvim</a><a href="/categories/gvim/IDE/">IDE</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vim和gvim"><span class="toc-number">2.</span> <span class="toc-text">vim和gvim</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#环境搭建"><span class="toc-number">3.</span> <span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MinGW安装"><span class="toc-number">4.</span> <span class="toc-text">MinGW安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">4.1.</span> <span class="toc-text">安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GVim安装"><span class="toc-number">5.</span> <span class="toc-text">GVim安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GVim插件的安装"><span class="toc-number">6.</span> <span class="toc-text">GVim插件的安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Vundle安装"><span class="toc-number">6.1.</span> <span class="toc-text">Vundle安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#安装步骤"><span class="toc-number">6.1.1.</span> <span class="toc-text">安装步骤</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ctags"><span class="toc-number">6.2.</span> <span class="toc-text">Ctags</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过Vundle安装剩下的插件"><span class="toc-number">6.3.</span> <span class="toc-text">通过Vundle安装剩下的插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vundle的基本命令"><span class="toc-number">6.4.</span> <span class="toc-text">vundle的基本命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结语"><span class="toc-number">7.</span> <span class="toc-text">结语</span></a></li></ol></div></div><div class="post-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在记录开始之前，我想先介绍一下vim和gvim。</p>
+<blockquote>
+<h2 id="vim和gvim"><a href="#vim和gvim" class="headerlink" title="vim和gvim"></a>vim和gvim</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;Vim诞生的具体时间虽然没有具体的说明，但是最初创建它的原因据说是因为作者在新购入的计算机这当中并没有找到他熟悉的编辑器Vi，而Vim的诞生，起初是为了完全复制Vi的功能，但是在1992年1.22版本的Vim被移植到UNIX和MS-DOS上时开始，Vim的全名就改为Vi IMproved，此前，Vim的全名为Vi IMitation，也就是从这时起，Vim加入了不计其数的新功能。<br>&nbsp;&nbsp;&nbsp;&nbsp;Vim作为从Vi里面发展出来的类Vi中最优秀的一款编辑器，拥有代码补全、编译及错误跳转等方便编程的各类功能和插件，在程序员和文档编辑的工作人员中被广泛的使用着，同时也作为无GUI系统上最强的编辑器之一的存在（另一个为Emacs），Vim的操作完全可以不依赖于鼠标进行编辑，使用户的双手可以一直在打字区悬留，且各类插件强大功能的支撑下，Vim赢得了编辑器之神的美誉。<br>&nbsp;&nbsp;&nbsp;&nbsp;Vim虽然强大，但是从设计之初都只是为了在类UNIX的系统上运行，所以没有GUI也不兼容大多数有GUI的系统，为此，GVim诞生了，GVim拥有对用户较为友善的GUI，且在各大主流平台都有相应的安装包，将Vim完美的兼容到了各个主流平台，并且GUI也使得Vim的门槛也变得比较低，不再是曾经那个不看完说明书都不知道怎么保存退出的编辑器。  </p>
+</blockquote>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>因为GVim和其插件以及MinGW对系统环境的要求并不严格，基本上都可以通过安装器直接安装并运行，所以这个环节没有任何内容，可以直接跳过。</p>
+<h2 id="MinGW安装"><a href="#MinGW安装" class="headerlink" title="MinGW安装"></a>MinGW安装</h2><p>因为是作为C/C++的IDE，所以还需要在windows平台上安装C/C++的编译器，同样，在安装之前，先简单的介绍一下MinGW这个编译器。因为都是些老生常谈且比较浅显的东西，了解MinGW这个编译器的可以跳过介绍部分直接看安装。</p>
+<blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;MinGW, a contraction of “Minimalist GNU for Windows”, is a minimalist development environment for native Microsoft Windows applications.<br>&nbsp;&nbsp;&nbsp;&nbsp;MinGW provides a complete Open Source programming tool set which is suitable for the development of native MS-Windows applications, and which do not depend on any 3rd-party C-Runtime DLLs. (It does depend on a number of DLLs provided by Microsoft themselves, as components of the operating system; most notable among these is MSVCRT.DLL, the Microsoft C runtime library. Additionally, threaded applications must ship with a freely distributable thread support DLL, provided as part of MinGW itself).<br>&nbsp;&nbsp;&nbsp;&nbsp;因为本人的英语水平所限，不对这部分进行翻译，大致意思就是MinGW是一个不依赖于外部C的类库，本身自带了所需的，系统没有的部分类库的一个极简的开发环境。</p>
+</blockquote>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ol>
+<li>下载<ul>
+<li>曾经有一段时间MinGW的官网<a href="http://www.mingw.org/" target="_blank" rel="noopener" title="MinGW.org">http://www.mingw.org/</a>是无法在国内访问的，但是在我编撰这篇记录的时候，我又重新尝试访问了MinGW的官网，结果竟然成功了，在官网里面可以直接找到下载的地址，如果官网不能访问的话，也可以在其它地方进行下载，大部分时候下载到的都是安装器，自带更新检测，所以不用太担心下载不到最新的问题。</li>
+</ul>
+</li>
+<li>安装MinGW<ul>
+<li>最开始会选择安装的路径，后面所有下载到的资源文件都放在这个文件夹，所以尽量不要选择空间小的磁盘</li>
+<li>在最开始会下载一些基本的信息，然后打开新的下载页面</li>
+<li>选择需要安装的组件，我这里推荐无脑下载MinGW一开始推荐的列表上的所有组件，基本上后续的一些简单的开发都不会遇到编译上面的问题，后面再将需要的组件手动补齐即可，当然，熟悉的人自己选择所需的组件即可</li>
+<li>等待下载，下载完即可使用</li>
+</ul>
+</li>
+<li>配置环境变量<ul>
+<li>新建新的系统变量<code>MINGW_HOME</code>存储MinGW的根目录，例如<code>D:\MinGW</code></li>
+<li>在系统变量<code>Path</code>中添加<code>%MINGW_HOME%\bin</code></li>
+</ul>
+</li>
+</ol>
+<p>注意事项：<br>&nbsp;&nbsp;&nbsp;&nbsp;虽然不是每个人都会遇到下载失败的问题，但是还是要简单的提一下，因为目前下载器不能自己指定镜像，也不能设置代理，所以基本上是靠自己的网络状况来下载，不过部分可以全局代理的VPN是一个不错的选择，也可以在下载失败之后，记录下失败的文件，手动下载完之后放到自动创建的文件夹底下，下次启动下载器是会检查已下载的文件，存在则跳过下载环节，不过因为我是可以直接下载成功的(虽然下载失败了很多次，但是我重新下载了数次之后将失败的全部都下载下来了)，所以对于手动下载的具体操作我也说不好，大家可以自行百度。</p>
+<h2 id="GVim安装"><a href="#GVim安装" class="headerlink" title="GVim安装"></a>GVim安装</h2><ol>
+<li><p>下载</p>
+<ul>
+<li>GVim是不盈利的开源项目，在github上面搜索gvim就可以直接找到，不过我还是将可以发布页的链接贴出来，方便大家下载<a href="https://github.com/vim/vim-win32-installer/releases" target="_blank" rel="noopener" title="Release· vim/vim_win32_install· GitHub">https://github.com/vim/vim-win32-installer/releases</a></li>
+</ul>
+</li>
+<li><p>解压</p>
+</li>
+<li><p>配置环境变量</p>
+<ul>
+<li>新建新的系统变量<code>VIM_HOME</code></li>
+</ul>
+<p>接下来就是重头戏了，Vim之所以强大是因为他的可扩展性十分强大，还拥有专门的脚本语言，极大的增强了插件的功能</p>
+</li>
+</ol>
+<h2 id="GVim插件的安装"><a href="#GVim插件的安装" class="headerlink" title="GVim插件的安装"></a>GVim插件的安装</h2><p>在开始安装插件之前，我想先把我现在安装了的插件和其功能贴出来，方便大家参阅。</p>
+<blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这里的功能不完全是插件的功能，而是我在配置我的gvim中所使用的插件的功能，还有许多重要的功能我并没有写出来，同样，等级也是对我自己的gvim来说的重要等级，每个人可以按照自己的需求和对插件的了解重新评估这个等级。</p>
+</blockquote>
+<ul>
+<li><code>vundle</code><ul>
+<li>功能：vundle是需要第一个安装的插件，虽然不是安装插件的必然插件，但是可以省下基本的查找、下载、安装的步骤，并且只需要知道名字或者github的链接就可以了。</li>
+<li>等级：必要</li>
+</ul>
+</li>
+<li><code>SuperTab</code><ul>
+<li>功能：根据已存在的内容自动补全</li>
+<li>等级：重要</li>
+</ul>
+</li>
+<li><code>TagList</code><ul>
+<li>功能：taglist是一个用于显示定位程序中各种符号的插件，例如宏定义、变量名、结构名、函数名这些东西 我们将其称之为符号(symbols)，而在taglist中将其称之为tag。显然，要想将程序文件中的tag显示出来，需要事先了解全部tag的信 息，并将其保存在一个文件中，然后去解析对应的tag文件。taglist做的仅仅是将tag文件中的内容解析完后显示在Vim上而已。</li>
+<li>等级：必要</li>
+</ul>
+</li>
+<li><code>NERDTree</code><ul>
+<li>功能：NERDTree是一个用于浏览文件系统的树形资源管理外挂,它可以让你像使用Windows档案总管一样在VIM中浏览文件系统并且打开文件或目录。</li>
+<li>等级：必要</li>
+</ul>
+</li>
+<li><code>WinManager</code><ul>
+<li>功能：窗口管理，可以将TagList和NERDTree都控制在同一边并分上下屏，美观还省地方</li>
+<li>等级：必要</li>
+</ul>
+</li>
+<li><code>Vim-airline</code><ul>
+<li>功能：这是一款状态栏增强插件，可以让你的Vim状态栏非常的美观，同时包括了buffer显示条扩展smart tab line以及集成了一些插件。</li>
+<li>等级：重要</li>
+</ul>
+</li>
+<li><code>OmniCppComplete</code><ul>
+<li>功能：C/C++方法自动补齐，但是不打算把Vim当做一个C/C++开发的IDE的话不需要改插件</li>
+<li>等级：非必要/必要</li>
+</ul>
+</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;还有一个不能再Vundle里面安装的插件，ctags，推荐在github上面安装较新版本，ctags 5.8版本不能对更深的层级做递归，在生成Java源码和Java项目源码的tags时，只能生成一部分，需要注意一下</p>
+<h3 id="Vundle安装"><a href="#Vundle安装" class="headerlink" title="Vundle安装"></a>Vundle安装</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;Vundle是vim的插件管理器，只要安装完了Vundle，剩下的插件基本上就是一行命令的事情，所以，第一个安装的插件应该是Vundle（其实还有其他的插件管理器，不过我也没有用过，所以就不对其他的插件管理器做介绍了，有兴趣的可以自己百度），而Vundle插件的安装则依赖于Git和curl。</p>
+<h4 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h4><ol>
+<li>下载Git和Curl<ul>
+<li>Git下载地址：<a href="https://github.com/git-for-windows/git/releases/" target="_blank" rel="noopener" title="git - Download">https://github.com/git-for-windows/git/releases/</a></li>
+<li>Curl下载地址：<a href="https://curl.haxx.se/download.html" target="_blank" rel="noopener" title="curl - Download">https://curl.haxx.se/download.html</a>，需要注意的是，页面的最顶端的链接是源码的链接，下载前请看清楚。</li>
+</ul>
+</li>
+<li>安装Git，将<code>Curl.exe</code>的位置加入系统变量<code>Path</code>中或者将<code>Curl.exe</code>放入<code>System32</code>下。</li>
+<li>检测环境<ul>
+<li>在控制台输入<code>git --version</code>和<code>curl --version</code>对两个工具进行检测，返回相应的版本信息则表示工具安装完成。</li>
+</ul>
+</li>
+<li>安装Vundle<ul>
+<li>在控制台中输入<code>$ git clone https://github.com/gmarik/vundle.git D:/vim/vim81/bundle/vundle</code>等待自动下载和安装</li>
+</ul>
+</li>
+</ol>
+<h3 id="Ctags"><a href="#Ctags" class="headerlink" title="Ctags"></a>Ctags</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;<code>Ctags</code>绝对算得上一个重量级的插件，只要你想要把你的Vim打造成一个强大且适合你自己的IDE，毕竟他可以让你在各个方法和类当中随意跳转，无所拘束，但同时也是一个比较难控制的一个插件，关于这个插件的用法我几乎可以在写一篇，但那是另一篇了，这篇里面我就不多做赘述了。接下来简单讲一下<code>Ctags</code>的安装。</p>
+<ol>
+<li>下载<ul>
+<li>在我写这篇文章的时候，百度出来的<code>Ctags</code>官网只能下载到5.8的版本，但是这个版本对层级比较深的源码，使用递归获取（指令<code>-R</code>）是拿不到的，所以要在<code>GitHub</code>上面下载更新的版本才能解决这个问题。</li>
+<li>Github上Ctags的地址：<a href="https://github.com/universal-ctags/ctags-win32/releases" target="_blank" rel="noopener" title="github: ctags">https://github.com/universal-ctags/ctags-win32/releases</a></li>
+</ul>
+</li>
+<li>解压</li>
+<li>将<code>ctags.exe</code>所在的目录地址存入系统变量中</li>
+</ol>
+<h3 id="通过Vundle安装剩下的插件"><a href="#通过Vundle安装剩下的插件" class="headerlink" title="通过Vundle安装剩下的插件"></a>通过Vundle安装剩下的插件</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;因为剩下的插件安装除了<code>ctags</code>基本上都可以通过Vundle安装，所以这里贴出我之前提到的插件的配置和安装指令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">&quot; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; Plugin Config Start &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; &quot;</span><br><span class="line"></span><br><span class="line">&quot; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; Ctags Config Start  &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; &quot;</span><br><span class="line"></span><br><span class="line">&quot; 设置tags位置，这里要注意一点！+&#x3D; 两遍不能有空格！否则VIM无法解析！ &quot;</span><br><span class="line">&quot; C&#x2F;C++源码的tags &quot;</span><br><span class="line"> set tags+&#x3D;$TAGS\_HOME&#x2F;c\_cpp&#x2F;systags</span><br><span class="line">&quot; Java源码的tags</span><br><span class="line">&quot; set tags+&#x3D;$JAVA\_HOME&#x2F;src&#x2F;Java8Src</span><br><span class="line"></span><br><span class="line">&quot; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; Ctags Config End  &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; &quot;</span><br><span class="line"></span><br><span class="line">&quot; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; TagList Config Start &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; &quot;</span><br><span class="line"></span><br><span class="line">&quot; 指定taglist需要使用的ctags的地址，如果不指定该地址，taglist可能无法使用</span><br><span class="line">let Tlist\_Ctags\_Cmd &#x3D; &#39;D:\vim\ctags\ctags.exe&#39;</span><br><span class="line">&quot; taglist同时只展示1个文件的sysmbol列表，0 支持展示多个 &quot;</span><br><span class="line">let Tlist\_Show\_One\_File&#x3D;1</span><br><span class="line">&quot; 0的话就是显示在左边， 1 是右边 &quot;</span><br><span class="line">let Tlist\_Use\_Right\_Window&#x3D;0</span><br><span class="line">&quot; 当taglist是最后一个窗口时，自动退出Vim &quot;</span><br><span class="line">let Tlist\_Exit\_OnlyWindow&#x3D;1</span><br><span class="line">&quot; 实时更新tags &quot;</span><br><span class="line">let Tlist\_Process\_File\_Always&#x3D;1</span><br><span class="line"></span><br><span class="line">&quot; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; TagList Config End &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; &quot;</span><br><span class="line"></span><br><span class="line">&quot; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; JavaComplete2 Config Start &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; &quot;</span><br><span class="line"></span><br><span class="line">autocmd FileType java setlocal omnifunc&#x3D;javacomplete#Complete</span><br><span class="line"></span><br><span class="line">&quot; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; JavaComplete2 Config End &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; &quot;</span><br><span class="line"></span><br><span class="line">&quot; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; WinManager Config Start &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; &quot;</span><br><span class="line"></span><br><span class="line">&quot; 设置要管理的组件，并对NERDTree组件进行设置，如果不设置，则不能使用winManager启动NERDTree &quot;</span><br><span class="line">let g:NERDTree\_title&#x3D;&#39;NERD Tree&#39;</span><br><span class="line">let g:winManagerWindowLayout&#x3D;&#39;NERDTree|TagList&#39;</span><br><span class="line">function! NERDTree\_Start()</span><br><span class="line">    exec &#39;NERDTree&#39;</span><br><span class="line">endfunction</span><br><span class="line"></span><br><span class="line">function! NERDTree\_IsValid()</span><br><span class="line">    return 1</span><br><span class="line">endfunction</span><br><span class="line"></span><br><span class="line">&quot; 绑定F2到winmanager，并在启动时关闭额外自动打开的缓冲区 &quot;</span><br><span class="line">nmap \&lt;silent\&gt; \&lt;F2\&gt; :if IsWinManagerVisible() \&lt;BAR\&gt; WMToggle\&lt;CR\&gt; \&lt;BAR\&gt; else \&lt;BAR\&gt; WMToggle\&lt;CR\&gt;:q\&lt;CR\&gt; endif \&lt;CR\&gt;</span><br><span class="line"></span><br><span class="line">&quot; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; WinManager Config End &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; &quot;</span><br><span class="line"></span><br><span class="line">&quot; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; Plugin Config End &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; &quot;</span><br><span class="line"></span><br><span class="line">&quot; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; Plugin Install Start &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; &quot;</span><br><span class="line"></span><br><span class="line">&quot; 设置包括vundle和初始化相关的runtime path</span><br><span class="line">set rtp+&#x3D;$VIM\_HOME&#x2F;bundle&#x2F;Vundle.vim</span><br><span class="line">call vundle#begin()</span><br><span class="line">&quot; 让vundle管理插件版本,必须 &quot;</span><br><span class="line">Plugin &#39;VundleVim&#x2F;Vundle.vim&#39;</span><br><span class="line">&quot; 自动补全 &quot;</span><br><span class="line">Plugin &#39;SuperTab&#39;</span><br><span class="line">&quot; taglist是一个用于显示定位程序中各种符号的插件，例如宏定义、变量名、结构名、函数名这些东西 我们将其称之为符号(symbols)，而在taglist中将其称之为tag。显然，要想将程序文件中的tag显示出来，需要事先了解全部tag的信 息，并将其保存在一个文件中，然后去解析对应的tag文件。taglist做的仅仅是将tag文件中的内容解析完后显示在Vim上而已。 &quot;  </span><br><span class="line">Plugin &#39;taglist.vim&#39;</span><br><span class="line">&quot; NERDTree是一个用于浏览文件系统的树形资源管理外挂,它可以让你像使用Windows档案总管一样在VIM中浏览文件系统并且打开文件或目录。 &quot;  </span><br><span class="line">Plugin &#39;https:&#x2F;&#x2F;github.com&#x2F;scrooloose&#x2F;nerdtree.git&#39;</span><br><span class="line">&quot; 窗口管理 &quot;</span><br><span class="line">Plugin &#39;WinManager&#39;</span><br><span class="line">&quot; 这是一款状态栏增强插件，可以让你的Vim状态栏非常的美观，同时包括了buffer显示条扩展smart tab line以及集成了一些插件。 &quot;  </span><br><span class="line">Plugin &#39;Vim-airline&#39;</span><br><span class="line">&quot; C&#x2F;C++方法自动补齐 &quot;</span><br><span class="line">Plugin &#39;OmniCppComplete&#39;</span><br><span class="line">&quot; Java代码自动补全</span><br><span class="line">&quot; Plugin &#39;artur-shaik&#x2F;vim-javacomplete2&#39;</span><br><span class="line">&quot; 你的所有插件需要在下面这行之前，必须 &quot;</span><br><span class="line">call vundle#end()</span><br><span class="line">&quot; 必须 加载vim自带和插件相应的语法和文件类型相关脚本 &quot;</span><br><span class="line">filetype plugin indent on</span><br><span class="line">&quot; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; Plugin Install End &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; &quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="vundle的基本命令"><a href="#vundle的基本命令" class="headerlink" title="vundle的基本命令"></a>vundle的基本命令</h3><p>在vim的命令行模式下，直接输入</p>
+<ul>
+<li><code>:PluginInstall</code> 安装插件</li>
+<li><code>:PluginList</code> 查看已安装软件</li>
+<li><code>:PluginClean</code> 清除列表中没有的插件</li>
+<li><code>:h vundle</code> 查看帮助</li>
+</ul>
+<p>或者在控制台直接输入</p>
+<ul>
+<li><code>vim +PluginInstall +qall</code> 安装插件</li>
+</ul>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;以上就是搭建一个最最最基本的C/C++的IDE的基本教程，需要注意的是，我的配置文件里面也提到了Java代码自动补齐的插件，如果需要使用该插件，请确保自己的Vim支持Python（Python2或者Python3都可以），可以先在Vim的命令模式中输入<code>:python print(&quot;hello world&quot;)</code>，如果成功在输出的话，而不是提示缺少<code>pythonxx.dll</code>（<code>xx</code>指代数字，一般是版本号）的话，就是支持python且电脑已经安装了python环境，如果提示缺少dll，根据最后的数字下载安装就可以了，还有就是在控制台输入<code>vim --version</code>，如果是<code>+</code>号就代表支持，<code>-</code>号代表不支持，也就是说，<code>+python</code>/<code>+python/dyn</code>就是支持python2，<code>python3</code>/<code>python3/dyn</code>就是支持python3。<br>&nbsp;&nbsp;&nbsp;&nbsp;如果出现不支持python环境的情况的话（虽然按照我的教程的地址下一般不会出现这个问题，但一定有些人已经有了自己的vim，所以还是要说一下），一般来说有两种办法，一个是重编译vim，使其支持python，好处是能够自己选择vim支持的python的版本，坏处就是windows上面基本没办法重编译，难度很高，另一个办法就简单点，重新下一个，反正vim最核心的还是配置文件和自己的脚本，迁移过来就好了，没有什么影响的。</p>
+</blockquote>
+</div><div class="tags"></div><div class="post-nav"><a class="next" href="/2020/02/07/%E5%9C%A8Github%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">在 Github 上使用 Hexo 搭建简易个人博客</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="search-form"><input id="local-search-input" placeholder="Search" type="text" name="q" results="0"/><div id="local-search-result"></div></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/cmd/">cmd</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gvim/">gvim</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/gvim/IDE/">IDE</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/idea/">idea</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/idea/IDE/">IDE</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/idea/IDE/PlantUML/">PlantUML</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/markdown/">markdown</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">个人博客</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/02/11/Windows%E4%B8%8A%E9%85%8D%E7%BD%AEGVim%E5%B9%B6%E4%BD%9C%E4%B8%BAC%E5%92%8CC++%E7%9A%84IDE/">Windows上配置gvim并作为C和C++的IDE</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/02/07/%E5%9C%A8Github%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">在 Github 上使用 Hexo 搭建简易个人博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/24/Typeperf%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">Typeperf 使用说明</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/08/Markdown%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E5%9B%BE%E7%89%87/">Markdown中存储图片</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/08/%E5%85%B3%E4%BA%8Eidea%20PlantUML%E6%8F%92%E4%BB%B6%E5%AF%BC%E5%8C%85%E5%A4%B1%E8%B4%A5/">关于IDEA PlantUML 插件导包找不到的问题</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="https://www.haomwei.com/" title="屠城|屠夫9441禁猎区(当前主题作者)" target="_blank">屠城|屠夫9441禁猎区(当前主题作者)</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Reasuon.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/search.js?v=0.0.0"></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+   search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
