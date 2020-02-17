@@ -130,35 +130,6 @@
     
     
     <entry>
-      <title>记 Debian 9 搭建 FreeSwitch</title>
-      <link href="/2019/05/08/%E8%AE%B0Debian9%E6%90%AD%E5%BB%BAFreeSwitch/"/>
-      <url>/2019/05/08/%E8%AE%B0Debian9%E6%90%AD%E5%BB%BAFreeSwitch/</url>
-      
-        <content type="html"><![CDATA[<p>根据官网进行 FreeSWITCH 服务器环境的安装与搭建，一下流程基本来自于官方教程，地址如下:<br><a href="https://freeswitch.org/confluence/display/FREESWITCH/Debian+9+Stretch" target="_blank" rel="noopener">https://freeswitch.org/confluence/display/FREESWITCH/Debian+9+Stretch</a>  </p><a id="more"></a><h2 id="便捷安装"><a href="#便捷安装" class="headerlink" title="便捷安装"></a>便捷安装</h2><p>在网络环境正常的情况下，基本上半小时内能够安装完成  </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">apt-get update &amp;&amp; apt-get install -y gnupg2 wget</span><br><span class="line">wget -O - https://files.freeswitch.org/repo/deb/debian-release/fsstretch-archive-keyring.asc | apt-key add -</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"deb http://files.freeswitch.org/repo/deb/debian-release/ stretch main"</span> &gt; /etc/apt/sources.list.d/freeswitch.list</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"deb-src http://files.freeswitch.org/repo/deb/debian-release/ stretch main"</span> &gt;&gt; /etc/apt/sources.list.d/freeswitch.list</span><br><span class="line"></span><br><span class="line"><span class="comment"># you may want to populate /etc/freeswitch at this point.</span></span><br><span class="line"><span class="comment"># if /etc/freeswitch does not exist, the standard vanilla configuration is deployed</span></span><br><span class="line">apt-get update &amp;&amp; apt-get install -y freeswitch-meta-all</span><br></pre></td></tr></table></figure><p>在使用 apt-get 安装完成之后，使用下面命令可以启动 FreeSWITCH 在终端上的客户端。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs_cli -rRS</span><br></pre></td></tr></table></figure><p>在刚刚安装完就使用上面的指令，有可能与遇到启动失败的情况，大致内容如下:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@freeswitch:~<span class="comment"># fs_cli -rRS</span></span><br><span class="line">[ERROR] fs_cli.c:1688 main() Error Connecting []</span><br><span class="line">[INFO] fs_cli.c:1694 main() Retrying</span><br><span class="line">[ERROR] fs_cli.c:1688 main() Error Connecting []</span><br><span class="line">[INFO] fs_cli.c:1694 main() Retrying</span><br></pre></td></tr></table></figure><p>如果是这样说连接不上的话，有很大的可能是因为刚刚安装完成，FreeSWITCH 没有自启的原因，这时候输入<code>freeswitch -nc</code>这条指令在后台开启 FreeSWITCH，再输入<code>fs_cli -rRS</code>就可以了，如果还是失败也别着急关闭，有可能是因为 FreeSWITCH 还在启动中的原因。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> Linux </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Debian </tag>
-            
-            <tag> FreeSWITCH </tag>
-            
-            <tag> 环境搭建 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>记一次 Java Font 跨平台中文乱码</title>
       <link href="/2019/05/08/%E8%AE%B0%E4%B8%80%E6%AC%A1Java%E7%BB%98%E5%9B%BE%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/"/>
       <url>/2019/05/08/%E8%AE%B0%E4%B8%80%E6%AC%A1Java%E7%BB%98%E5%9B%BE%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/</url>
@@ -180,6 +151,35 @@
             <tag> Java </tag>
             
             <tag> 中文乱码 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>记 Debian 9 搭建 FreeSwitch</title>
+      <link href="/2019/05/08/%E8%AE%B0Debian9%E6%90%AD%E5%BB%BAFreeSwitch/"/>
+      <url>/2019/05/08/%E8%AE%B0Debian9%E6%90%AD%E5%BB%BAFreeSwitch/</url>
+      
+        <content type="html"><![CDATA[<p>根据官网进行 FreeSWITCH 服务器环境的安装与搭建，一下流程基本来自于官方教程，地址如下:<br><a href="https://freeswitch.org/confluence/display/FREESWITCH/Debian+9+Stretch" target="_blank" rel="noopener">https://freeswitch.org/confluence/display/FREESWITCH/Debian+9+Stretch</a>  </p><a id="more"></a><h2 id="便捷安装"><a href="#便捷安装" class="headerlink" title="便捷安装"></a>便捷安装</h2><p>在网络环境正常的情况下，基本上半小时内能够安装完成  </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">apt-get update &amp;&amp; apt-get install -y gnupg2 wget</span><br><span class="line">wget -O - https://files.freeswitch.org/repo/deb/debian-release/fsstretch-archive-keyring.asc | apt-key add -</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"deb http://files.freeswitch.org/repo/deb/debian-release/ stretch main"</span> &gt; /etc/apt/sources.list.d/freeswitch.list</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"deb-src http://files.freeswitch.org/repo/deb/debian-release/ stretch main"</span> &gt;&gt; /etc/apt/sources.list.d/freeswitch.list</span><br><span class="line"></span><br><span class="line"><span class="comment"># you may want to populate /etc/freeswitch at this point.</span></span><br><span class="line"><span class="comment"># if /etc/freeswitch does not exist, the standard vanilla configuration is deployed</span></span><br><span class="line">apt-get update &amp;&amp; apt-get install -y freeswitch-meta-all</span><br></pre></td></tr></table></figure><p>在使用 apt-get 安装完成之后，使用下面命令可以启动 FreeSWITCH 在终端上的客户端。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs_cli -rRS</span><br></pre></td></tr></table></figure><p>在刚刚安装完就使用上面的指令，有可能与遇到启动失败的情况，大致内容如下:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@freeswitch:~<span class="comment"># fs_cli -rRS</span></span><br><span class="line">[ERROR] fs_cli.c:1688 main() Error Connecting []</span><br><span class="line">[INFO] fs_cli.c:1694 main() Retrying</span><br><span class="line">[ERROR] fs_cli.c:1688 main() Error Connecting []</span><br><span class="line">[INFO] fs_cli.c:1694 main() Retrying</span><br></pre></td></tr></table></figure><p>如果是这样说连接不上的话，有很大的可能是因为刚刚安装完成，FreeSWITCH 没有自启的原因，这时候输入<code>freeswitch -nc</code>这条指令在后台开启 FreeSWITCH，再输入<code>fs_cli -rRS</code>就可以了，如果还是失败也别着急关闭，有可能是因为 FreeSWITCH 还在启动中的原因。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Debian </tag>
+            
+            <tag> FreeSWITCH </tag>
+            
+            <tag> 环境搭建 </tag>
             
         </tags>
       
