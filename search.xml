@@ -86,9 +86,9 @@
       
         <tags>
             
-            <tag> 问题解决 </tag>
-            
             <tag> Java </tag>
+            
+            <tag> 问题解决 </tag>
             
             <tag> 字符集 </tag>
             
@@ -130,6 +130,35 @@
     
     
     <entry>
+      <title>记一次 Java Font 跨平台中文乱码</title>
+      <link href="/2019/05/08/%E8%AE%B0%E4%B8%80%E6%AC%A1Java%E7%BB%98%E5%9B%BE%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/"/>
+      <url>/2019/05/08/%E8%AE%B0%E4%B8%80%E6%AC%A1Java%E7%BB%98%E5%9B%BE%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/</url>
+      
+        <content type="html"><![CDATA[<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Color color=<span class="keyword">new</span> Color(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>);</span><br><span class="line">Font font = <span class="keyword">new</span> Font(<span class="string">"msyh"</span>, Font.PLAIN, <span class="number">64</span>);</span><br></pre></td></tr></table></figure><h2 id="情景"><a href="#情景" class="headerlink" title="情景"></a>情景</h2><p>这套代码在 windows 平台上面跑的时候是完全没有问题的，但是在项目迁移到 Linux 的时候突然出现了中文乱码的问题。</p><a id="more"></a><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>一开始猜想是在生成或使用字符串的时候，字符串的编码格式错误，但是断点监测全流程发现没有丝毫问题，是将文字写到图片上面的时候突然就乱码了，搜了一下发现绘图时乱码可能是字体不支持的问题，于是开始查看 Linux 的字体库。<br>以下命令皆为 CentOS7.2 的运行环境。  </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CentOS7 安装字体库</span></span><br><span class="line">yum install -y fontconfig</span><br><span class="line"><span class="comment"># 查看安装的字体</span></span><br><span class="line"><span class="built_in">fc</span>-list</span><br><span class="line"><span class="comment"># 这里查出了很多，所以筛选一下</span></span><br><span class="line"><span class="comment"># 查找中文字体</span></span><br><span class="line"><span class="built_in">fc</span>-list :lang=zh</span><br><span class="line"><span class="comment"># 发现一个都没有</span></span><br></pre></td></tr></table></figure><p>这里将 windows 平台的 <code>C:\windows\Fonts</code> 下的微软雅黑字体拷贝到 <code>/usr/share/fonts</code><br>就是下面这三个文件<br><code>msyh.ttc</code>、<code>msyhl.ttc</code>、<code>msyhbd.ttc</code></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装字体并刷新缓存</span></span><br><span class="line"><span class="built_in">cd</span> /usr/share/fonts</span><br><span class="line">mkfontscale</span><br><span class="line">mkfontdir</span><br><span class="line"><span class="built_in">fc</span>-cache -fv</span><br></pre></td></tr></table></figure><p>运行结束正常输出汉字。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 编程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 中文乱码 </tag>
+            
+            <tag> 问题解决 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>记 Debian 9 搭建 FreeSwitch</title>
       <link href="/2019/05/08/%E8%AE%B0Debian9%E6%90%AD%E5%BB%BAFreeSwitch/"/>
       <url>/2019/05/08/%E8%AE%B0Debian9%E6%90%AD%E5%BB%BAFreeSwitch/</url>
@@ -151,35 +180,6 @@
             <tag> FreeSWITCH </tag>
             
             <tag> 环境搭建 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>记一次 Java Font 跨平台中文乱码</title>
-      <link href="/2019/05/08/%E8%AE%B0%E4%B8%80%E6%AC%A1Java%E7%BB%98%E5%9B%BE%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/"/>
-      <url>/2019/05/08/%E8%AE%B0%E4%B8%80%E6%AC%A1Java%E7%BB%98%E5%9B%BE%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/</url>
-      
-        <content type="html"><![CDATA[<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Color color=<span class="keyword">new</span> Color(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>);</span><br><span class="line">Font font = <span class="keyword">new</span> Font(<span class="string">"msyh"</span>, Font.PLAIN, <span class="number">64</span>);</span><br></pre></td></tr></table></figure><h2 id="情景"><a href="#情景" class="headerlink" title="情景"></a>情景</h2><p>这套代码在 windows 平台上面跑的时候是完全没有问题的，但是在项目迁移到 Linux 的时候突然出现了中文乱码的问题。</p><a id="more"></a><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>一开始猜想是在生成或使用字符串的时候，字符串的编码格式错误，但是断点监测全流程发现没有丝毫问题，是将文字写到图片上面的时候突然就乱码了，搜了一下发现绘图时乱码可能是字体不支持的问题，于是开始查看 Linux 的字体库。<br>以下命令皆为 CentOS7.2 的运行环境。  </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CentOS7 安装字体库</span></span><br><span class="line">yum install -y fontconfig</span><br><span class="line"><span class="comment"># 查看安装的字体</span></span><br><span class="line"><span class="built_in">fc</span>-list</span><br><span class="line"><span class="comment"># 这里查出了很多，所以筛选一下</span></span><br><span class="line"><span class="comment"># 查找中文字体</span></span><br><span class="line"><span class="built_in">fc</span>-list :lang=zh</span><br><span class="line"><span class="comment"># 发现一个都没有</span></span><br></pre></td></tr></table></figure><p>这里将 windows 平台的 <code>C:\windows\Fonts</code> 下的微软雅黑字体拷贝到 <code>/usr/share/fonts</code><br>就是下面这三个文件<br><code>msyh.ttc</code>、<code>msyhl.ttc</code>、<code>msyhbd.ttc</code></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装字体并刷新缓存</span></span><br><span class="line"><span class="built_in">cd</span> /usr/share/fonts</span><br><span class="line">mkfontscale</span><br><span class="line">mkfontdir</span><br><span class="line"><span class="built_in">fc</span>-cache -fv</span><br></pre></td></tr></table></figure><p>运行结束正常输出汉字。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 编程 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 问题解决 </tag>
-            
-            <tag> Java </tag>
-            
-            <tag> 中文乱码 </tag>
             
         </tags>
       
@@ -258,9 +258,9 @@
       
         <tags>
             
-            <tag> 问题解决 </tag>
-            
             <tag> Java </tag>
+            
+            <tag> 问题解决 </tag>
             
             <tag> jdk </tag>
             
@@ -314,11 +314,11 @@
       
         <tags>
             
+            <tag> 问题解决 </tag>
+            
             <tag> idea </tag>
             
             <tag> plantuml </tag>
-            
-            <tag> 问题解决 </tag>
             
         </tags>
       

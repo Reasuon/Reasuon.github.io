@@ -103,9 +103,9 @@
       <category term="编程" scheme="http://reasuon.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="问题解决" scheme="http://reasuon.github.io/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
-    
       <category term="Java" scheme="http://reasuon.github.io/tags/Java/"/>
+    
+      <category term="问题解决" scheme="http://reasuon.github.io/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     
       <category term="字符集" scheme="http://reasuon.github.io/tags/%E5%AD%97%E7%AC%A6%E9%9B%86/"/>
     
@@ -141,6 +141,33 @@
   </entry>
   
   <entry>
+    <title>记一次 Java Font 跨平台中文乱码</title>
+    <link href="http://reasuon.github.io/2019/05/08/%E8%AE%B0%E4%B8%80%E6%AC%A1Java%E7%BB%98%E5%9B%BE%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/"/>
+    <id>http://reasuon.github.io/2019/05/08/%E8%AE%B0%E4%B8%80%E6%AC%A1Java%E7%BB%98%E5%9B%BE%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/</id>
+    <published>2019-05-08T15:20:57.000Z</published>
+    <updated>2020-02-17T09:33:38.572Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Color color=<span class="keyword">new</span> Color(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>);</span><br><span class="line">Font font = <span class="keyword">new</span> Font(<span class="string">"msyh"</span>, Font.PLAIN, <span class="number">64</span>);</span><br></pre></td></tr></table></figure><h2 id="情景"><a href="#情景" class="headerlink" title="情景"></a>情景</h2><p>这套代码在 windows 平台上面跑的时候是完全没有问题的，但是在项目迁移到 Linux 的时候突然出现了中文乱码的问题。</p><a id="more"></a><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>一开始猜想是在生成或使用字符串的时候，字符串的编码格式错误，但是断点监测全流程发现没有丝毫问题，是将文字写到图片上面的时候突然就乱码了，搜了一下发现绘图时乱码可能是字体不支持的问题，于是开始查看 Linux 的字体库。<br>以下命令皆为 CentOS7.2 的运行环境。  </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CentOS7 安装字体库</span></span><br><span class="line">yum install -y fontconfig</span><br><span class="line"><span class="comment"># 查看安装的字体</span></span><br><span class="line"><span class="built_in">fc</span>-list</span><br><span class="line"><span class="comment"># 这里查出了很多，所以筛选一下</span></span><br><span class="line"><span class="comment"># 查找中文字体</span></span><br><span class="line"><span class="built_in">fc</span>-list :lang=zh</span><br><span class="line"><span class="comment"># 发现一个都没有</span></span><br></pre></td></tr></table></figure><p>这里将 windows 平台的 <code>C:\windows\Fonts</code> 下的微软雅黑字体拷贝到 <code>/usr/share/fonts</code><br>就是下面这三个文件<br><code>msyh.ttc</code>、<code>msyhl.ttc</code>、<code>msyhbd.ttc</code></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装字体并刷新缓存</span></span><br><span class="line"><span class="built_in">cd</span> /usr/share/fonts</span><br><span class="line">mkfontscale</span><br><span class="line">mkfontdir</span><br><span class="line"><span class="built_in">fc</span>-cache -fv</span><br></pre></td></tr></table></figure><p>运行结束正常输出汉字。</p>]]></content>
+    
+    <summary type="html">
+    
+      一开始猜想是在生成或使用字符串的时候，字符串的编码格式错误，但是断点监测全流程发现没有丝毫问题，是将文字写到图片上面的时候突然就乱码了，搜了一下发现绘图时乱码可能是字体不支持的问题，于是开始查看 Linux 的字体库。
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="http://reasuon.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Java" scheme="http://reasuon.github.io/tags/Java/"/>
+    
+      <category term="中文乱码" scheme="http://reasuon.github.io/tags/%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/"/>
+    
+      <category term="问题解决" scheme="http://reasuon.github.io/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    
+  </entry>
+  
+  <entry>
     <title>记 Debian 9 搭建 FreeSwitch</title>
     <link href="http://reasuon.github.io/2019/05/08/%E8%AE%B0Debian9%E6%90%AD%E5%BB%BAFreeSwitch/"/>
     <id>http://reasuon.github.io/2019/05/08/%E8%AE%B0Debian9%E6%90%AD%E5%BB%BAFreeSwitch/</id>
@@ -164,33 +191,6 @@
       <category term="FreeSWITCH" scheme="http://reasuon.github.io/tags/FreeSWITCH/"/>
     
       <category term="环境搭建" scheme="http://reasuon.github.io/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>记一次 Java Font 跨平台中文乱码</title>
-    <link href="http://reasuon.github.io/2019/05/08/%E8%AE%B0%E4%B8%80%E6%AC%A1Java%E7%BB%98%E5%9B%BE%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/"/>
-    <id>http://reasuon.github.io/2019/05/08/%E8%AE%B0%E4%B8%80%E6%AC%A1Java%E7%BB%98%E5%9B%BE%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/</id>
-    <published>2019-05-08T15:20:57.000Z</published>
-    <updated>2020-02-17T09:33:38.572Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Color color=<span class="keyword">new</span> Color(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>);</span><br><span class="line">Font font = <span class="keyword">new</span> Font(<span class="string">"msyh"</span>, Font.PLAIN, <span class="number">64</span>);</span><br></pre></td></tr></table></figure><h2 id="情景"><a href="#情景" class="headerlink" title="情景"></a>情景</h2><p>这套代码在 windows 平台上面跑的时候是完全没有问题的，但是在项目迁移到 Linux 的时候突然出现了中文乱码的问题。</p><a id="more"></a><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>一开始猜想是在生成或使用字符串的时候，字符串的编码格式错误，但是断点监测全流程发现没有丝毫问题，是将文字写到图片上面的时候突然就乱码了，搜了一下发现绘图时乱码可能是字体不支持的问题，于是开始查看 Linux 的字体库。<br>以下命令皆为 CentOS7.2 的运行环境。  </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CentOS7 安装字体库</span></span><br><span class="line">yum install -y fontconfig</span><br><span class="line"><span class="comment"># 查看安装的字体</span></span><br><span class="line"><span class="built_in">fc</span>-list</span><br><span class="line"><span class="comment"># 这里查出了很多，所以筛选一下</span></span><br><span class="line"><span class="comment"># 查找中文字体</span></span><br><span class="line"><span class="built_in">fc</span>-list :lang=zh</span><br><span class="line"><span class="comment"># 发现一个都没有</span></span><br></pre></td></tr></table></figure><p>这里将 windows 平台的 <code>C:\windows\Fonts</code> 下的微软雅黑字体拷贝到 <code>/usr/share/fonts</code><br>就是下面这三个文件<br><code>msyh.ttc</code>、<code>msyhl.ttc</code>、<code>msyhbd.ttc</code></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装字体并刷新缓存</span></span><br><span class="line"><span class="built_in">cd</span> /usr/share/fonts</span><br><span class="line">mkfontscale</span><br><span class="line">mkfontdir</span><br><span class="line"><span class="built_in">fc</span>-cache -fv</span><br></pre></td></tr></table></figure><p>运行结束正常输出汉字。</p>]]></content>
-    
-    <summary type="html">
-    
-      一开始猜想是在生成或使用字符串的时候，字符串的编码格式错误，但是断点监测全流程发现没有丝毫问题，是将文字写到图片上面的时候突然就乱码了，搜了一下发现绘图时乱码可能是字体不支持的问题，于是开始查看 Linux 的字体库。
-    
-    </summary>
-    
-    
-      <category term="编程" scheme="http://reasuon.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="问题解决" scheme="http://reasuon.github.io/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
-    
-      <category term="Java" scheme="http://reasuon.github.io/tags/Java/"/>
-    
-      <category term="中文乱码" scheme="http://reasuon.github.io/tags/%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/"/>
     
   </entry>
   
@@ -222,7 +222,7 @@
     <link href="http://reasuon.github.io/2019/01/24/Debian%E7%BB%88%E7%AB%AF%E9%A2%9C%E8%89%B2%E8%AE%BE%E7%BD%AE/"/>
     <id>http://reasuon.github.io/2019/01/24/Debian%E7%BB%88%E7%AB%AF%E9%A2%9C%E8%89%B2%E8%AE%BE%E7%BD%AE/</id>
     <published>2019-01-24T03:42:34.000Z</published>
-    <updated>2020-02-17T09:24:17.656Z</updated>
+    <updated>2020-02-17T09:55:51.576Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>PS1 是用来定义命令行提示符的参数，而我们每次登陆终端，使用命令时最前面的那一段就是 PS1，debian默认是没有颜色，且格式不美观的一串，例如: <code>[root@debian ~]#</code>，在进入多级文件夹之后，就会变成<code>[root@debian /xxx/xxx/xxx/xxx]#</code>，这会显得十分的难看。而这些问题，都可以通过修改 PS1 的参数来解决这个问题。  </p></blockquote><a id="more"></a><h2 id="颜色格式一览"><a href="#颜色格式一览" class="headerlink" title="颜色格式一览"></a>颜色格式一览</h2><blockquote><p>设置颜色的格式为：以 <code>[\e[F;Bm]</code> 开始，以 <code>\e[m</code> 结束。其中“F“为字体颜色，编号为30-37，“B”为背景颜色，编号为40-47。  </p><p><code>F B</code> 颜色<br><code>30 40</code> 黑色<br><code>31 41</code> 红色<br><code>32 42</code> 绿色<br><code>33 43</code> 黄色<br><code>34 44</code> 蓝色<br><code>35 45</code> 紫红色<br><code>36 46</code> 青蓝色<br><code>37 47</code> 白色  </p><p>特别代码意义  </p><p><code>0</code> OFF<br><code>1</code> 高亮显示<br><code>4</code> underline<br><code>5</code> 闪烁<br><code>7</code> 反白显示<br><code>8</code> 不可见  </p></blockquote><h2 id="PS1参数介绍"><a href="#PS1参数介绍" class="headerlink" title="PS1参数介绍"></a>PS1参数介绍</h2><blockquote><p><code>\d</code> ：代表日期，格式为weekday month date，例如：”Mon Aug 1”<br><code>\H</code> ：完整的主机名称<br><code>\h</code> ：仅取主机名中的第一个名字<br><code>\t</code> ：显示时间为24小时格式，如：HH：MM：SS<br><code>\T</code> ：显示时间为12小时格式<br><code>\A</code> ：显示时间为24小时格式：HH：MM<br><code>\u</code> ：当前用户的账号名称<br><code>\v</code> ：BASH的版本信息<br><code>\w</code> ：完整的工作目录名称<br><code>\W</code> ：利用basename取得工作目录名称，只显示最后一个目录名<br><code>\#</code> ：下达的第几个命令<br><code>\$</code> ：提示字符，如果是root用户，提示符为 # ，普通用户则为 $  </p><p>那么PS1=’[\u@\h \w]$ ‘的意思就是：[当前用户的账号名称@主机名的第一个名字 完整的工作目录名称]  </p></blockquote><h2 id="设置方式"><a href="#设置方式" class="headerlink" title="设置方式"></a>设置方式</h2><p>Debian的控制台设置是每个用户单独一份，存放在每个用户的<code>~/.bashrc</code>内，这里简单讲一下怎么设置。<br>我当前使用的 Debian 版本为 9.x ，root 用户默认的配置文件内容如下：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ~/.bashrc: executed by bash(1) for non-login shells.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Note: PS1 and umask are already set in /etc/profile. You should not</span></span><br><span class="line"><span class="comment"># need this unless you want different defaults for root.</span></span><br><span class="line"><span class="comment"># PS1='$&#123;debian_chroot:+($debian_chroot)&#125;\h:\w\$ '</span></span><br><span class="line"><span class="comment"># umask 022</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You may uncomment the following lines if you want `ls' to be colorized:</span></span><br><span class="line"><span class="comment"># export LS_OPTIONS='--color=auto'</span></span><br><span class="line"><span class="comment"># eval "`dircolors`"</span></span><br><span class="line"><span class="comment"># alias ls='ls $LS_OPTIONS'</span></span><br><span class="line"><span class="comment"># alias ll='ls $LS_OPTIONS -l'</span></span><br><span class="line"><span class="comment"># alias l='ls $LS_OPTIONS -lA'</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Some more alias to avoid making mistakes:</span></span><br><span class="line"><span class="comment"># alias rm='rm -i'</span></span><br><span class="line"><span class="comment"># alias cp='cp -i'</span></span><br><span class="line"><span class="comment"># alias mv='mv -i'</span></span><br></pre></td></tr></table></figure><p>这个是默认的配置，其中，从第9行到第13行，是默认的文件系统的颜色，就是文件夹和文件的颜色，去掉注释就可以使用了，基本没有特别配置的需要。<br>这里也可以看到是有默认的 PS1 的配置的，虽然被注释掉了，这时候，我们只需要在下面加入我们自己的 PS1 配置就可以了，例如我的配置如下:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS1=<span class="string">'\[\e[37;40m\][\[\e[32;40m\]\u\[\e[37;40m\]@\h \[\e[35;40m\]\W\[\e[0m\]]\$ '</span></span><br></pre></td></tr></table></figure><p>因为我的终端是黑色为底色，所以我的所有背景都是黑色，白色终端的话，将<code>40m</code>更替为<code>47m</code>就可以了。</p>]]></content>
     
@@ -265,9 +265,9 @@
       <category term="编程" scheme="http://reasuon.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="问题解决" scheme="http://reasuon.github.io/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
-    
       <category term="Java" scheme="http://reasuon.github.io/tags/Java/"/>
+    
+      <category term="问题解决" scheme="http://reasuon.github.io/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     
       <category term="jdk" scheme="http://reasuon.github.io/tags/jdk/"/>
     
@@ -317,11 +317,11 @@
       <category term="工具" scheme="http://reasuon.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
     
     
+      <category term="问题解决" scheme="http://reasuon.github.io/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    
       <category term="idea" scheme="http://reasuon.github.io/tags/idea/"/>
     
       <category term="plantuml" scheme="http://reasuon.github.io/tags/plantuml/"/>
-    
-      <category term="问题解决" scheme="http://reasuon.github.io/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     
   </entry>
   
