@@ -103,9 +103,9 @@
       <category term="编程" scheme="http://reasuon.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Java" scheme="http://reasuon.github.io/tags/Java/"/>
-    
       <category term="问题解决" scheme="http://reasuon.github.io/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    
+      <category term="Java" scheme="http://reasuon.github.io/tags/Java/"/>
     
       <category term="字符集" scheme="http://reasuon.github.io/tags/%E5%AD%97%E7%AC%A6%E9%9B%86/"/>
     
@@ -141,33 +141,6 @@
   </entry>
   
   <entry>
-    <title>记一次 Java Font 跨平台中文乱码</title>
-    <link href="http://reasuon.github.io/2019/05/08/%E8%AE%B0%E4%B8%80%E6%AC%A1Java%E7%BB%98%E5%9B%BE%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/"/>
-    <id>http://reasuon.github.io/2019/05/08/%E8%AE%B0%E4%B8%80%E6%AC%A1Java%E7%BB%98%E5%9B%BE%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/</id>
-    <published>2019-05-08T15:20:57.000Z</published>
-    <updated>2020-02-17T09:33:38.572Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Color color=<span class="keyword">new</span> Color(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>);</span><br><span class="line">Font font = <span class="keyword">new</span> Font(<span class="string">"msyh"</span>, Font.PLAIN, <span class="number">64</span>);</span><br></pre></td></tr></table></figure><h2 id="情景"><a href="#情景" class="headerlink" title="情景"></a>情景</h2><p>这套代码在 windows 平台上面跑的时候是完全没有问题的，但是在项目迁移到 Linux 的时候突然出现了中文乱码的问题。</p><a id="more"></a><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>一开始猜想是在生成或使用字符串的时候，字符串的编码格式错误，但是断点监测全流程发现没有丝毫问题，是将文字写到图片上面的时候突然就乱码了，搜了一下发现绘图时乱码可能是字体不支持的问题，于是开始查看 Linux 的字体库。<br>以下命令皆为 CentOS7.2 的运行环境。  </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CentOS7 安装字体库</span></span><br><span class="line">yum install -y fontconfig</span><br><span class="line"><span class="comment"># 查看安装的字体</span></span><br><span class="line"><span class="built_in">fc</span>-list</span><br><span class="line"><span class="comment"># 这里查出了很多，所以筛选一下</span></span><br><span class="line"><span class="comment"># 查找中文字体</span></span><br><span class="line"><span class="built_in">fc</span>-list :lang=zh</span><br><span class="line"><span class="comment"># 发现一个都没有</span></span><br></pre></td></tr></table></figure><p>这里将 windows 平台的 <code>C:\windows\Fonts</code> 下的微软雅黑字体拷贝到 <code>/usr/share/fonts</code><br>就是下面这三个文件<br><code>msyh.ttc</code>、<code>msyhl.ttc</code>、<code>msyhbd.ttc</code></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装字体并刷新缓存</span></span><br><span class="line"><span class="built_in">cd</span> /usr/share/fonts</span><br><span class="line">mkfontscale</span><br><span class="line">mkfontdir</span><br><span class="line"><span class="built_in">fc</span>-cache -fv</span><br></pre></td></tr></table></figure><p>运行结束正常输出汉字。</p>]]></content>
-    
-    <summary type="html">
-    
-      一开始猜想是在生成或使用字符串的时候，字符串的编码格式错误，但是断点监测全流程发现没有丝毫问题，是将文字写到图片上面的时候突然就乱码了，搜了一下发现绘图时乱码可能是字体不支持的问题，于是开始查看 Linux 的字体库。
-    
-    </summary>
-    
-    
-      <category term="编程" scheme="http://reasuon.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="Java" scheme="http://reasuon.github.io/tags/Java/"/>
-    
-      <category term="中文乱码" scheme="http://reasuon.github.io/tags/%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/"/>
-    
-      <category term="问题解决" scheme="http://reasuon.github.io/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
-    
-  </entry>
-  
-  <entry>
     <title>记 Debian 9 搭建 FreeSwitch</title>
     <link href="http://reasuon.github.io/2019/05/08/%E8%AE%B0Debian9%E6%90%AD%E5%BB%BAFreeSwitch/"/>
     <id>http://reasuon.github.io/2019/05/08/%E8%AE%B0Debian9%E6%90%AD%E5%BB%BAFreeSwitch/</id>
@@ -191,6 +164,33 @@
       <category term="FreeSWITCH" scheme="http://reasuon.github.io/tags/FreeSWITCH/"/>
     
       <category term="环境搭建" scheme="http://reasuon.github.io/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>记一次 Java Font 跨平台中文乱码</title>
+    <link href="http://reasuon.github.io/2019/05/08/%E8%AE%B0%E4%B8%80%E6%AC%A1Java%E7%BB%98%E5%9B%BE%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/"/>
+    <id>http://reasuon.github.io/2019/05/08/%E8%AE%B0%E4%B8%80%E6%AC%A1Java%E7%BB%98%E5%9B%BE%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/</id>
+    <published>2019-05-08T15:20:57.000Z</published>
+    <updated>2020-02-17T09:33:38.572Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Color color=<span class="keyword">new</span> Color(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>);</span><br><span class="line">Font font = <span class="keyword">new</span> Font(<span class="string">"msyh"</span>, Font.PLAIN, <span class="number">64</span>);</span><br></pre></td></tr></table></figure><h2 id="情景"><a href="#情景" class="headerlink" title="情景"></a>情景</h2><p>这套代码在 windows 平台上面跑的时候是完全没有问题的，但是在项目迁移到 Linux 的时候突然出现了中文乱码的问题。</p><a id="more"></a><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>一开始猜想是在生成或使用字符串的时候，字符串的编码格式错误，但是断点监测全流程发现没有丝毫问题，是将文字写到图片上面的时候突然就乱码了，搜了一下发现绘图时乱码可能是字体不支持的问题，于是开始查看 Linux 的字体库。<br>以下命令皆为 CentOS7.2 的运行环境。  </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CentOS7 安装字体库</span></span><br><span class="line">yum install -y fontconfig</span><br><span class="line"><span class="comment"># 查看安装的字体</span></span><br><span class="line"><span class="built_in">fc</span>-list</span><br><span class="line"><span class="comment"># 这里查出了很多，所以筛选一下</span></span><br><span class="line"><span class="comment"># 查找中文字体</span></span><br><span class="line"><span class="built_in">fc</span>-list :lang=zh</span><br><span class="line"><span class="comment"># 发现一个都没有</span></span><br></pre></td></tr></table></figure><p>这里将 windows 平台的 <code>C:\windows\Fonts</code> 下的微软雅黑字体拷贝到 <code>/usr/share/fonts</code><br>就是下面这三个文件<br><code>msyh.ttc</code>、<code>msyhl.ttc</code>、<code>msyhbd.ttc</code></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装字体并刷新缓存</span></span><br><span class="line"><span class="built_in">cd</span> /usr/share/fonts</span><br><span class="line">mkfontscale</span><br><span class="line">mkfontdir</span><br><span class="line"><span class="built_in">fc</span>-cache -fv</span><br></pre></td></tr></table></figure><p>运行结束正常输出汉字。</p>]]></content>
+    
+    <summary type="html">
+    
+      一开始猜想是在生成或使用字符串的时候，字符串的编码格式错误，但是断点监测全流程发现没有丝毫问题，是将文字写到图片上面的时候突然就乱码了，搜了一下发现绘图时乱码可能是字体不支持的问题，于是开始查看 Linux 的字体库。
+    
+    </summary>
+    
+    
+      <category term="编程" scheme="http://reasuon.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="问题解决" scheme="http://reasuon.github.io/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    
+      <category term="Java" scheme="http://reasuon.github.io/tags/Java/"/>
+    
+      <category term="中文乱码" scheme="http://reasuon.github.io/tags/%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/"/>
     
   </entry>
   
@@ -265,11 +265,38 @@
       <category term="编程" scheme="http://reasuon.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Java" scheme="http://reasuon.github.io/tags/Java/"/>
-    
       <category term="问题解决" scheme="http://reasuon.github.io/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     
+      <category term="Java" scheme="http://reasuon.github.io/tags/Java/"/>
+    
       <category term="jdk" scheme="http://reasuon.github.io/tags/jdk/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于IDEA PlantUML 插件导包找不到的问题</title>
+    <link href="http://reasuon.github.io/2018/11/08/%E5%85%B3%E4%BA%8Eidea%20PlantUML%E6%8F%92%E4%BB%B6%E5%AF%BC%E5%8C%85%E5%A4%B1%E8%B4%A5/"/>
+    <id>http://reasuon.github.io/2018/11/08/%E5%85%B3%E4%BA%8Eidea%20PlantUML%E6%8F%92%E4%BB%B6%E5%AF%BC%E5%8C%85%E5%A4%B1%E8%B4%A5/</id>
+    <published>2018-11-08T03:43:07.000Z</published>
+    <updated>2020-02-17T08:32:55.962Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>不想看过程分析的可以参考一下做法，这个包的缺失是因为idea插件更新没跟上的原因，因为这是一个新功能，把插件的包替换为官网最新包即可解决</p><h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p><code>!include &lt;tupadr3/common&gt;</code>提示找不到该包</p><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="资源缺陷"><a href="#资源缺陷" class="headerlink" title="资源缺陷"></a>资源缺陷</h4><p>因为是找不到包，所以大部分的情况下应该是资源缺陷，打开<br><code>C:\Users\Administrator\.IntelliJIdea2017.2\config\plugins\plantuml4idea\lib</code><br>不同IDEA的版本可能不同位置，但应该都在<code>C:\Users\Administrator\</code>下面，只是版本号不是2017.2<br>因为插件包的plantuml的版本为2018.9，使用cmd命令行<code>java -jar plantuml.1.2018.9.jar -stdlib</code>检测底下的lib包<br>得到如下数据</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">aws</span><br><span class="line">Version 18.02.22</span><br><span class="line">Delivered by https://github.com/milo-minderbinder/AWS-PlantUML</span><br><span class="line"></span><br><span class="line">cloudinsight</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/rabelenda/cicon-plantuml-sprites/</span><br><span class="line"></span><br><span class="line">cloudogu</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/cloudogu/plantuml-cloudogu-sprites</span><br><span class="line"></span><br><span class="line">devicons</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/tupadr3/plantuml-icon-font-sprites</span><br><span class="line"></span><br><span class="line">font-awesome</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/tupadr3/plantuml-icon-font-sprites</span><br><span class="line"></span><br><span class="line">material</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/Templarian/MaterialDesign</span><br><span class="line"></span><br><span class="line">office</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/Roemer/plantuml-office</span><br></pre></td></tr></table></figure><p>仔细一看，果然没有<code>tupadr3</code>这个包，我们可以下一份最新的版本，我当时下载的最新版本是1.2018.11，使用<br><code>java -jar plantuml.1.2018.9.jar -stdlib</code>得到的结果多了一段</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tupadr3</span><br><span class="line">Version 2.0.0</span><br><span class="line">Delivered by https://github.com/tupadr3/plantuml-icon-font-sprites</span><br></pre></td></tr></table></figure><p>而这个就是我们需要的包了，将这个包替换到<br><code>C:\Users\Administrator\.IntelliJIdea2017.2\config\plugins\plantuml4idea\lib</code><br>下面，并将名字修改为<code>plantuml.1.2018.9.jar</code>，或者把<code>plantuml4idea.jar</code>里面的<code>.\META-INF\plugin.xml</code>内的配置文件也可以达到改名的效果，不过那样的话在更新插件可能会照成错误，所以并不推荐</p>]]></content>
+    
+    <summary type="html">
+    
+      不想看过程分析的可以参考一下做法，这个包的缺失是因为idea插件更新没跟上的原因，因为这是一个新功能，把插件的包替换为官网最新包即可解决
+    
+    </summary>
+    
+    
+      <category term="工具" scheme="http://reasuon.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="idea" scheme="http://reasuon.github.io/tags/idea/"/>
+    
+      <category term="plantuml" scheme="http://reasuon.github.io/tags/plantuml/"/>
+    
+      <category term="问题解决" scheme="http://reasuon.github.io/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     
   </entry>
   
@@ -295,33 +322,6 @@
       <category term="java" scheme="http://reasuon.github.io/tags/java/"/>
     
       <category term="easypoi" scheme="http://reasuon.github.io/tags/easypoi/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>关于IDEA PlantUML 插件导包找不到的问题</title>
-    <link href="http://reasuon.github.io/2018/11/08/%E5%85%B3%E4%BA%8Eidea%20PlantUML%E6%8F%92%E4%BB%B6%E5%AF%BC%E5%8C%85%E5%A4%B1%E8%B4%A5/"/>
-    <id>http://reasuon.github.io/2018/11/08/%E5%85%B3%E4%BA%8Eidea%20PlantUML%E6%8F%92%E4%BB%B6%E5%AF%BC%E5%8C%85%E5%A4%B1%E8%B4%A5/</id>
-    <published>2018-11-08T03:43:07.000Z</published>
-    <updated>2020-02-17T08:32:55.962Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>不想看过程分析的可以参考一下做法，这个包的缺失是因为idea插件更新没跟上的原因，因为这是一个新功能，把插件的包替换为官网最新包即可解决</p><h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p><code>!include &lt;tupadr3/common&gt;</code>提示找不到该包</p><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="资源缺陷"><a href="#资源缺陷" class="headerlink" title="资源缺陷"></a>资源缺陷</h4><p>因为是找不到包，所以大部分的情况下应该是资源缺陷，打开<br><code>C:\Users\Administrator\.IntelliJIdea2017.2\config\plugins\plantuml4idea\lib</code><br>不同IDEA的版本可能不同位置，但应该都在<code>C:\Users\Administrator\</code>下面，只是版本号不是2017.2<br>因为插件包的plantuml的版本为2018.9，使用cmd命令行<code>java -jar plantuml.1.2018.9.jar -stdlib</code>检测底下的lib包<br>得到如下数据</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">aws</span><br><span class="line">Version 18.02.22</span><br><span class="line">Delivered by https://github.com/milo-minderbinder/AWS-PlantUML</span><br><span class="line"></span><br><span class="line">cloudinsight</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/rabelenda/cicon-plantuml-sprites/</span><br><span class="line"></span><br><span class="line">cloudogu</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/cloudogu/plantuml-cloudogu-sprites</span><br><span class="line"></span><br><span class="line">devicons</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/tupadr3/plantuml-icon-font-sprites</span><br><span class="line"></span><br><span class="line">font-awesome</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/tupadr3/plantuml-icon-font-sprites</span><br><span class="line"></span><br><span class="line">material</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/Templarian/MaterialDesign</span><br><span class="line"></span><br><span class="line">office</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/Roemer/plantuml-office</span><br></pre></td></tr></table></figure><p>仔细一看，果然没有<code>tupadr3</code>这个包，我们可以下一份最新的版本，我当时下载的最新版本是1.2018.11，使用<br><code>java -jar plantuml.1.2018.9.jar -stdlib</code>得到的结果多了一段</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tupadr3</span><br><span class="line">Version 2.0.0</span><br><span class="line">Delivered by https://github.com/tupadr3/plantuml-icon-font-sprites</span><br></pre></td></tr></table></figure><p>而这个就是我们需要的包了，将这个包替换到<br><code>C:\Users\Administrator\.IntelliJIdea2017.2\config\plugins\plantuml4idea\lib</code><br>下面，并将名字修改为<code>plantuml.1.2018.9.jar</code>，或者把<code>plantuml4idea.jar</code>里面的<code>.\META-INF\plugin.xml</code>内的配置文件也可以达到改名的效果，不过那样的话在更新插件可能会照成错误，所以并不推荐</p>]]></content>
-    
-    <summary type="html">
-    
-      不想看过程分析的可以参考一下做法，这个包的缺失是因为idea插件更新没跟上的原因，因为这是一个新功能，把插件的包替换为官网最新包即可解决
-    
-    </summary>
-    
-    
-      <category term="工具" scheme="http://reasuon.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
-    
-    
-      <category term="问题解决" scheme="http://reasuon.github.io/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
-    
-      <category term="idea" scheme="http://reasuon.github.io/tags/idea/"/>
-    
-      <category term="plantuml" scheme="http://reasuon.github.io/tags/plantuml/"/>
     
   </entry>
   
