@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>Git 常用命令记录</title>
+      <link href="/2020/06/08/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/"/>
+      <url>/2020/06/08/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Git-初始化"><a href="#Git-初始化" class="headerlink" title="Git 初始化"></a>Git 初始化</h2><h3 id="初始化必须配置项"><a href="#初始化必须配置项" class="headerlink" title="初始化必须配置项"></a>初始化必须配置项</h3><p>以下为第一次安装 Git 时需要注意得去专门配置<br>说是必须配置，其实除了用户名和邮箱的配置，其他不配置也不会影响到 Git 的功能，但是为了用户体验和日常使用最好都配置一下</p><h4 id="用户名与邮箱配置"><a href="#用户名与邮箱配置" class="headerlink" title="用户名与邮箱配置"></a>用户名与邮箱配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">"该字符串替换为你的Git用户名(一般来说可以随便取，并不作为认证使用，只是作为团队内区分使用)"</span></span><br><span class="line">git config --global user.email <span class="string">"该字符串替换为你的邮箱即可"</span></span><br><span class="line"><span class="comment"># e.g.</span></span><br><span class="line"><span class="comment"># git config --global user.name "reasuon"</span></span><br><span class="line"><span class="comment"># git config --global user.email "reasuon@foxmail.com"</span></span><br></pre></td></tr></table></figure><h4 id="公密钥生成"><a href="#公密钥生成" class="headerlink" title="公密钥生成"></a>公密钥生成</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成 SSH 公密钥对</span></span><br><span class="line"><span class="comment"># 默认使用 RSA 算法，所以即使不使用参数 -t rsa 也可以</span></span><br><span class="line">ssh-keygen -t rsa</span><br><span class="line"><span class="comment"># 推荐按三次回车，会使用无密码安装在 ~/.ssh 下，如果有密码的话，每次 pull 和 push 都需要输入密码</span></span><br></pre></td></tr></table></figure><p>SSH 默认公钥位置: <code>~/.ssh/id_rsa.pub</code><br>Windows SSH 默认公钥位置: <code>C:/User/用户名/.ssh/id_rsa.pub</code><br>Linux SSH 默认公钥位置: <code>/home/用户名/.ssh/id_rsa.pub</code> 或 <code>/root/.ssh/id_rsa.pub</code>  </p><h4 id="解决日志中文乱码问题-Windows系统常见问题"><a href="#解决日志中文乱码问题-Windows系统常见问题" class="headerlink" title="解决日志中文乱码问题(Windows系统常见问题)"></a>解决日志中文乱码问题(Windows系统常见问题)</h4><p>这个问题主要是因为 Windows 系统默认使用的中文编码是 <code>GBK</code>，但是 Git 一般默认使用的是 UTF-8，所以当 GBK 字符传输到 Git 时，终端一般情况是无法显示中文的，会出现如下乱码：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># &lt;A1&gt;&lt;A5&gt;&lt;BD&gt;&lt;C1&gt;&lt;D5&gt;</span></span><br></pre></td></tr></table></figure><p>遇到这种问题，要修改两个部分，一个是 git bash 终端的显示部分，让终端可以显示 UTF-8</p><p><code>右键</code> -&gt; <code>Options</code> -&gt; <code>Text</code> -&gt; <code>Locale</code> -&gt; <code>zh_Cn</code><br><code>右键</code> -&gt; <code>Options</code> -&gt; <code>Text</code> -&gt; <code>Character set</code> -&gt; <code>UTF-8</code></p><p>在 git bash 终端输入下面三条指令，让 <code>&lt;XX&gt;</code> 变成汉字</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 提交时使用 utf-8</span></span><br><span class="line">git config --global i18n.commitencoding utf-8</span><br><span class="line"><span class="comment"># 日志使用 utf-8 显示</span></span><br><span class="line">git config --global i18n.logoutputencoding utf-8</span><br><span class="line"><span class="comment"># LESS字符集 设置为 utf-8</span></span><br><span class="line"><span class="built_in">export</span> LESSCHARSET=utf-8</span><br></pre></td></tr></table></figure><h3 id="非必须配置项"><a href="#非必须配置项" class="headerlink" title="非必须配置项"></a>非必须配置项</h3><h4 id="配置项目专用用户名和邮箱"><a href="#配置项目专用用户名和邮箱" class="headerlink" title="配置项目专用用户名和邮箱"></a>配置项目专用用户名和邮箱</h4><p>如果有发布开源项目的习惯，那么不可避免的就会在一台电脑上使用不同的用户名和邮箱(大部分时候，个人账号都是和公司账号不同的)，这时候在项目内部就可配置专门的用户名和邮箱，只需要在项目内执行配置用户名和邮箱的命令，再把 <code>--global</code> 参数去掉就行，这个参数代表全局变量，不带则为局部变量</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设项目名为 project</span></span><br><span class="line"><span class="built_in">cd</span> project</span><br><span class="line">git config user.name <span class="string">"reasuon"</span></span><br><span class="line">git config user.email <span class="string">"reasuon@gmail.com"</span></span><br></pre></td></tr></table></figure><h2 id="Git-操作"><a href="#Git-操作" class="headerlink" title="Git 操作"></a>Git 操作</h2><h3 id="下载项目"><a href="#下载项目" class="headerlink" title="下载项目"></a>下载项目</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 克隆已经存在的仓库到本地</span></span><br><span class="line">git <span class="built_in">clone</span> ssh://github.com/libgit2/libgit2.git</span><br></pre></td></tr></table></figure><h3 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h3><h4 id="下载远程分支"><a href="#下载远程分支" class="headerlink" title="下载远程分支"></a>下载远程分支</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 把远程仓库的 dev 分支下载到本地</span></span><br><span class="line"><span class="comment"># 该命令会自动在本地新建 dev 分支，并指向远程仓库的 dev 分支</span></span><br><span class="line">git checkout -b dev origin/dev</span><br></pre></td></tr></table></figure><h4 id="创建本地分支并推送到远程分支"><a href="#创建本地分支并推送到远程分支" class="headerlink" title="创建本地分支并推送到远程分支"></a>创建本地分支并推送到远程分支</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在本地创建分支</span></span><br><span class="line">git checkout -b <span class="built_in">test</span></span><br><span class="line"><span class="comment"># 推送到远程仓库</span></span><br><span class="line"><span class="comment"># 该命令只会把分支 test 上传到远程仓库，还需要自己手动绑定</span></span><br><span class="line">git push origin <span class="built_in">test</span></span><br><span class="line"><span class="comment"># 将 test 分支指向远程仓库的 test</span></span><br><span class="line">git branch -u origin/<span class="built_in">test</span></span><br></pre></td></tr></table></figure><p>未完待续…</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 工具 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 使用技巧 </tag>
+            
+            <tag> git </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Java时间格式化工具SimpleDateFormat</title>
       <link href="/2020/02/19/Java%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%B7%A5%E5%85%B7SimpleDateFormat/"/>
       <url>/2020/02/19/Java%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%B7%A5%E5%85%B7SimpleDateFormat/</url>
@@ -78,11 +105,11 @@
       
         <tags>
             
+            <tag> git </tag>
+            
             <tag> 问题解决 </tag>
             
             <tag> idea </tag>
-            
-            <tag> git </tag>
             
         </tags>
       
@@ -262,9 +289,9 @@
       
         <tags>
             
-            <tag> 环境搭建 </tag>
-            
             <tag> Debian </tag>
+            
+            <tag> 环境搭建 </tag>
             
             <tag> FreeSWITCH </tag>
             
@@ -503,6 +530,35 @@
     
     
     <entry>
+      <title>关于IDEA PlantUML 插件导包找不到的问题</title>
+      <link href="/2018/11/08/%E5%85%B3%E4%BA%8Eidea%20PlantUML%E6%8F%92%E4%BB%B6%E5%AF%BC%E5%8C%85%E5%A4%B1%E8%B4%A5/"/>
+      <url>/2018/11/08/%E5%85%B3%E4%BA%8Eidea%20PlantUML%E6%8F%92%E4%BB%B6%E5%AF%BC%E5%8C%85%E5%A4%B1%E8%B4%A5/</url>
+      
+        <content type="html"><![CDATA[<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>不想看过程分析的可以参考一下做法，这个包的缺失是因为idea插件更新没跟上的原因，因为这是一个新功能，把插件的包替换为官网最新包即可解决</p><h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p><code>!include &lt;tupadr3/common&gt;</code>提示找不到该包</p><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="资源缺陷"><a href="#资源缺陷" class="headerlink" title="资源缺陷"></a>资源缺陷</h4><p>因为是找不到包，所以大部分的情况下应该是资源缺陷，打开<br><code>C:\Users\Administrator\.IntelliJIdea2017.2\config\plugins\plantuml4idea\lib</code><br>不同IDEA的版本可能不同位置，但应该都在<code>C:\Users\Administrator\</code>下面，只是版本号不是2017.2<br>因为插件包的plantuml的版本为2018.9，使用cmd命令行<code>java -jar plantuml.1.2018.9.jar -stdlib</code>检测底下的lib包<br>得到如下数据</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">aws</span><br><span class="line">Version 18.02.22</span><br><span class="line">Delivered by https://github.com/milo-minderbinder/AWS-PlantUML</span><br><span class="line"></span><br><span class="line">cloudinsight</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/rabelenda/cicon-plantuml-sprites/</span><br><span class="line"></span><br><span class="line">cloudogu</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/cloudogu/plantuml-cloudogu-sprites</span><br><span class="line"></span><br><span class="line">devicons</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/tupadr3/plantuml-icon-font-sprites</span><br><span class="line"></span><br><span class="line">font-awesome</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/tupadr3/plantuml-icon-font-sprites</span><br><span class="line"></span><br><span class="line">material</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/Templarian/MaterialDesign</span><br><span class="line"></span><br><span class="line">office</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/Roemer/plantuml-office</span><br></pre></td></tr></table></figure><p>仔细一看，果然没有<code>tupadr3</code>这个包，我们可以下一份最新的版本，我当时下载的最新版本是1.2018.11，使用<br><code>java -jar plantuml.1.2018.9.jar -stdlib</code>得到的结果多了一段</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tupadr3</span><br><span class="line">Version 2.0.0</span><br><span class="line">Delivered by https://github.com/tupadr3/plantuml-icon-font-sprites</span><br></pre></td></tr></table></figure><p>而这个就是我们需要的包了，将这个包替换到<br><code>C:\Users\Administrator\.IntelliJIdea2017.2\config\plugins\plantuml4idea\lib</code><br>下面，并将名字修改为<code>plantuml.1.2018.9.jar</code>，或者把<code>plantuml4idea.jar</code>里面的<code>.\META-INF\plugin.xml</code>内的配置文件也可以达到改名的效果，不过那样的话在更新插件可能会照成错误，所以并不推荐</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 工具 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 问题解决 </tag>
+            
+            <tag> idea </tag>
+            
+            <tag> plantuml </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>MySQL5.7版本新特性</title>
       <link href="/2018/11/08/MySQL5_7%E7%89%88%E6%9C%AC%E6%96%B0%E7%89%B9%E6%80%A7/"/>
       <url>/2018/11/08/MySQL5_7%E7%89%88%E6%9C%AC%E6%96%B0%E7%89%B9%E6%80%A7/</url>
@@ -522,37 +578,6 @@
             <tag> mysql </tag>
             
             <tag> 新特性 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Java连接Access数据库</title>
-      <link href="/2018/11/08/Java%E8%BF%9E%E6%8E%A5Access%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-      <url>/2018/11/08/Java%E8%BF%9E%E6%8E%A5Access%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
-      
-        <content type="html"><![CDATA[<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据sql语句将查询Access</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> sql 查询Access数据库的语句</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> accessUrl Access数据库地址</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> List&lt;Map&gt;</span></span><br><span class="line"><span class="comment"> * /</span></span><br><span class="line"><span class="comment">public List&lt;Map&lt;String, Object&gt;&gt; selectAccess(String sql, String accessUrl) &#123;</span></span><br><span class="line"><span class="comment">    List&lt;Map&lt;String, Object&gt;&gt; mapList = new ArrayList&lt;&gt;();</span></span><br><span class="line"><span class="comment">    Properties prop = new Properties();</span></span><br><span class="line"><span class="comment">    /* 中文乱码处理 */</span></span><br><span class="line">    prop.put(<span class="string">"charSet"</span>, <span class="string">"utf-8"</span>);</span><br><span class="line">    prop.put(<span class="string">"user"</span>, <span class="string">""</span>);</span><br><span class="line">    prop.put(<span class="string">"password"</span>, <span class="string">""</span>);</span><br><span class="line">    PreparedStatement ps = <span class="keyword">null</span>;</span><br><span class="line">    Statement stmt = <span class="keyword">null</span>;</span><br><span class="line">    ResultSet rs = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">/* 加载驱动&amp;建立连接 */</span></span><br><span class="line">        Class.forName(<span class="string">"net.ucanaccess.jdbc.UcanaccessDriver"</span>);</span><br><span class="line">        Connection conn = DriverManager.getConnection(<span class="string">"jdbc:ucanaccess://"</span> + accessUrl, <span class="string">"账号"</span>, <span class="string">"密码"</span>);</span><br><span class="line">        stmt = conn.createStatement();</span><br><span class="line">        rs = stmt.executeQuery(sql);</span><br><span class="line">        ResultSetMetaData data = rs.getMetaData();</span><br><span class="line">        <span class="keyword">while</span> (rs.next()) &#123;</span><br><span class="line">            Map&lt;String, Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">16</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= data.getColumnCount(); i++) &#123;</span><br><span class="line">                <span class="comment">/* 列名 */</span></span><br><span class="line">                String columnName = data.getColumnName(i);</span><br><span class="line">                <span class="comment">/* 值 */</span></span><br><span class="line">                String columnValue = rs.getString(i);</span><br><span class="line">                map.put(columnName, columnValue);</span><br><span class="line">            &#125;</span><br><span class="line">        mapList.add(map);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/* 关闭连接 */</span></span><br><span class="line">        conn.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> mapList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol><li>Access数据库时间的格式为<code>m/d/yyyy</code>，即使显示出来的数据为<code>yyyy/m/d</code></li><li><code>JAVA 7</code>以及之前的版本自带连接数据库的jdbc，但是之后的版本jdbc被移除，所以使用<code>JAVA 8</code>以及更高版本连接Access数据库时需要导入jar包</li><li><code>Access_JDBC30.jar</code>是<strong>付费使用</strong>，不付费会有连接次数和获取的最大记录条数限制（50次连接，1000最大记录）</li><li>连接Access数据库尽量使用<code>UCanAccess.jar</code>，目前没有任何限制</li></ol>]]></content>
-      
-      
-      <categories>
-          
-          <category> 编程 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> java </tag>
-            
-            <tag> access </tag>
-            
-            <tag> 数据库连接 </tag>
-            
-            <tag> jdbc </tag>
             
         </tags>
       
@@ -588,27 +613,29 @@
     
     
     <entry>
-      <title>关于IDEA PlantUML 插件导包找不到的问题</title>
-      <link href="/2018/11/08/%E5%85%B3%E4%BA%8Eidea%20PlantUML%E6%8F%92%E4%BB%B6%E5%AF%BC%E5%8C%85%E5%A4%B1%E8%B4%A5/"/>
-      <url>/2018/11/08/%E5%85%B3%E4%BA%8Eidea%20PlantUML%E6%8F%92%E4%BB%B6%E5%AF%BC%E5%8C%85%E5%A4%B1%E8%B4%A5/</url>
+      <title>Java连接Access数据库</title>
+      <link href="/2018/11/08/Java%E8%BF%9E%E6%8E%A5Access%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+      <url>/2018/11/08/Java%E8%BF%9E%E6%8E%A5Access%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
       
-        <content type="html"><![CDATA[<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>不想看过程分析的可以参考一下做法，这个包的缺失是因为idea插件更新没跟上的原因，因为这是一个新功能，把插件的包替换为官网最新包即可解决</p><h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p><code>!include &lt;tupadr3/common&gt;</code>提示找不到该包</p><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="资源缺陷"><a href="#资源缺陷" class="headerlink" title="资源缺陷"></a>资源缺陷</h4><p>因为是找不到包，所以大部分的情况下应该是资源缺陷，打开<br><code>C:\Users\Administrator\.IntelliJIdea2017.2\config\plugins\plantuml4idea\lib</code><br>不同IDEA的版本可能不同位置，但应该都在<code>C:\Users\Administrator\</code>下面，只是版本号不是2017.2<br>因为插件包的plantuml的版本为2018.9，使用cmd命令行<code>java -jar plantuml.1.2018.9.jar -stdlib</code>检测底下的lib包<br>得到如下数据</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">aws</span><br><span class="line">Version 18.02.22</span><br><span class="line">Delivered by https://github.com/milo-minderbinder/AWS-PlantUML</span><br><span class="line"></span><br><span class="line">cloudinsight</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/rabelenda/cicon-plantuml-sprites/</span><br><span class="line"></span><br><span class="line">cloudogu</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/cloudogu/plantuml-cloudogu-sprites</span><br><span class="line"></span><br><span class="line">devicons</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/tupadr3/plantuml-icon-font-sprites</span><br><span class="line"></span><br><span class="line">font-awesome</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/tupadr3/plantuml-icon-font-sprites</span><br><span class="line"></span><br><span class="line">material</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/Templarian/MaterialDesign</span><br><span class="line"></span><br><span class="line">office</span><br><span class="line">Version 0.0.1</span><br><span class="line">Delivered by https://github.com/Roemer/plantuml-office</span><br></pre></td></tr></table></figure><p>仔细一看，果然没有<code>tupadr3</code>这个包，我们可以下一份最新的版本，我当时下载的最新版本是1.2018.11，使用<br><code>java -jar plantuml.1.2018.9.jar -stdlib</code>得到的结果多了一段</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tupadr3</span><br><span class="line">Version 2.0.0</span><br><span class="line">Delivered by https://github.com/tupadr3/plantuml-icon-font-sprites</span><br></pre></td></tr></table></figure><p>而这个就是我们需要的包了，将这个包替换到<br><code>C:\Users\Administrator\.IntelliJIdea2017.2\config\plugins\plantuml4idea\lib</code><br>下面，并将名字修改为<code>plantuml.1.2018.9.jar</code>，或者把<code>plantuml4idea.jar</code>里面的<code>.\META-INF\plugin.xml</code>内的配置文件也可以达到改名的效果，不过那样的话在更新插件可能会照成错误，所以并不推荐</p>]]></content>
+        <content type="html"><![CDATA[<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据sql语句将查询Access</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> sql 查询Access数据库的语句</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> accessUrl Access数据库地址</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> List&lt;Map&gt;</span></span><br><span class="line"><span class="comment"> * /</span></span><br><span class="line"><span class="comment">public List&lt;Map&lt;String, Object&gt;&gt; selectAccess(String sql, String accessUrl) &#123;</span></span><br><span class="line"><span class="comment">    List&lt;Map&lt;String, Object&gt;&gt; mapList = new ArrayList&lt;&gt;();</span></span><br><span class="line"><span class="comment">    Properties prop = new Properties();</span></span><br><span class="line"><span class="comment">    /* 中文乱码处理 */</span></span><br><span class="line">    prop.put(<span class="string">"charSet"</span>, <span class="string">"utf-8"</span>);</span><br><span class="line">    prop.put(<span class="string">"user"</span>, <span class="string">""</span>);</span><br><span class="line">    prop.put(<span class="string">"password"</span>, <span class="string">""</span>);</span><br><span class="line">    PreparedStatement ps = <span class="keyword">null</span>;</span><br><span class="line">    Statement stmt = <span class="keyword">null</span>;</span><br><span class="line">    ResultSet rs = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">/* 加载驱动&amp;建立连接 */</span></span><br><span class="line">        Class.forName(<span class="string">"net.ucanaccess.jdbc.UcanaccessDriver"</span>);</span><br><span class="line">        Connection conn = DriverManager.getConnection(<span class="string">"jdbc:ucanaccess://"</span> + accessUrl, <span class="string">"账号"</span>, <span class="string">"密码"</span>);</span><br><span class="line">        stmt = conn.createStatement();</span><br><span class="line">        rs = stmt.executeQuery(sql);</span><br><span class="line">        ResultSetMetaData data = rs.getMetaData();</span><br><span class="line">        <span class="keyword">while</span> (rs.next()) &#123;</span><br><span class="line">            Map&lt;String, Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">16</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= data.getColumnCount(); i++) &#123;</span><br><span class="line">                <span class="comment">/* 列名 */</span></span><br><span class="line">                String columnName = data.getColumnName(i);</span><br><span class="line">                <span class="comment">/* 值 */</span></span><br><span class="line">                String columnValue = rs.getString(i);</span><br><span class="line">                map.put(columnName, columnValue);</span><br><span class="line">            &#125;</span><br><span class="line">        mapList.add(map);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/* 关闭连接 */</span></span><br><span class="line">        conn.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> mapList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol><li>Access数据库时间的格式为<code>m/d/yyyy</code>，即使显示出来的数据为<code>yyyy/m/d</code></li><li><code>JAVA 7</code>以及之前的版本自带连接数据库的jdbc，但是之后的版本jdbc被移除，所以使用<code>JAVA 8</code>以及更高版本连接Access数据库时需要导入jar包</li><li><code>Access_JDBC30.jar</code>是<strong>付费使用</strong>，不付费会有连接次数和获取的最大记录条数限制（50次连接，1000最大记录）</li><li>连接Access数据库尽量使用<code>UCanAccess.jar</code>，目前没有任何限制</li></ol>]]></content>
       
       
       <categories>
           
-          <category> 工具 </category>
+          <category> 编程 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 问题解决 </tag>
+            <tag> java </tag>
             
-            <tag> idea </tag>
+            <tag> access </tag>
             
-            <tag> plantuml </tag>
+            <tag> 数据库连接 </tag>
+            
+            <tag> jdbc </tag>
             
         </tags>
       
@@ -662,9 +689,9 @@
       
         <tags>
             
-            <tag> markdown </tag>
-            
             <tag> 使用技巧 </tag>
+            
+            <tag> markdown </tag>
             
         </tags>
       
